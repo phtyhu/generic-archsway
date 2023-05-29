@@ -14,6 +14,7 @@
     # 输入法 -  input method
     ~/.config/fcitx5: fcitx5/config
     ~/.config/fcitx5/rime/build/default.yaml: fcitx5/rime/default.yaml
+    ~/.config/fcitx5/rime/build/luna_pinyin.prism.bin: fcitx5/rime/luna_pinyin.prism.bin
 ###ENDOFLINK---
 - shell:
     - [git submodule update --init --recursive, Installing submodules]

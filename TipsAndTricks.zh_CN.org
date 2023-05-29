@@ -5,3 +5,8 @@
 
 ** Clight, Clightd
 [[https://github.com/FedeDP/Clightd][Clightd]] 是一个非常强大的工具，本项目只用到了它的一点功能（同时支持用 ACPI 调节笔记本屏幕背光，以及用 DDC 协议调节使用 DP/HDMI 连接的显示器的背光）。你可以自行探索更多用法。
+
+** 输入法
+[[https://github.com/rime/home/wiki/Configuration][rime]]
+
+[[https://github.com/rime/plum][plum]]
