@@ -16,7 +16,7 @@ This project is very suitable to be based on and do more configuration, to build
   - The installation script is idempotent.
   - (WIP) The guidance is very specific.
 - Suitable for long-term usage!
-  - The project make use of git and [[https://github.com/anishathalye/dotbot][dotbot]] to manage any configurations (including your own configurations, E.g. =~/.emacs.d= for Emacs).
+  - The project make use of git and [[https://github.com/anishathalye/dotbot][dotbot]] , is able to manage any configurations including your own, E.g. =~/.emacs.d= for Emacs.
   - This makes long-term maintenance, backup and restoring and quick deployment etc much easier.
 - Graphical Environment: [[https://github.com/swaywm][swaywm]]
 - Input method: [[https://github.com/fcitx/fcitx5][fcitx5]], [[https://github.com/rime][rime]]

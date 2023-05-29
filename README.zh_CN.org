@@ -14,7 +14,7 @@
   - 安装脚本是幂等的。
   - (WIP) 引导非常详尽。
 - 适合长期使用！
-  - 本项目借助 git 与 [[https://github.com/anishathalye/dotbot][dotbot]] 管理一切配置（包括你自己的配置，比如 Emacs 的 =~/.emacs.d= ）。
+  - 本项目借助 git 与 [[https://github.com/anishathalye/dotbot][dotbot]] ，能够管理一切配置，包括你自己的，比如 Emacs 的 =~/.emacs.d= 。
   - 这使得长期维护与备份恢复、快速部署等变得轻松简单。
 - 图形环境：[[https://github.com/swaywm][swaywm]]
 - 输入法：[[https://github.com/fcitx/fcitx5][fcitx5]], [[https://github.com/rime][rime]]
