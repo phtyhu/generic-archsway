@@ -99,7 +99,7 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
 
 ** 贡献
 欢迎参与贡献。
-你可以创建 [[https://github.com/phtyhu/generic-archsway][Pull Requests]]，[[https://github.com/phtyhu/generic-archsway][issues]] 等。
+你可以创建 [[https://github.com/phtyhu/generic-archsway/pulls][Pull Requests]]，[[https://github.com/phtyhu/generic-archsway/issues][issues]] 等。
 
 当前需要帮助的：
 - 本地化（添加更多语言环境，完善已有环境）。

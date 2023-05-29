@@ -94,7 +94,7 @@ See [[TipsAndTricks.org][Tips and Tricks]].
 
 ** Contributing
 It's welcomed to contribute to this project.
-You can make [[https://github.com/phtyhu/generic-archsway][Pull Requests]], [[https://github.com/phtyhu/generic-archsway][issues]] and more.
+You can make [[https://github.com/phtyhu/generic-archsway/pulls][Pull Requests]], [[https://github.com/phtyhu/generic-archsway/issues][issues]] and more.
 
 Currently help needed:
 - Localization (add more locale, improve existing locale).
