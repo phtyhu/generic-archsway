@@ -59,7 +59,8 @@
     # Neovim
     ~/.config/nvim: nvim
     # vifm
-    ~/.config/vifm: vifm
+    ~/.config/vifm/vifmrc: vifm/vifmrc
+    ~/.config/vifm/colors: vifm/colors
     # zathura
     ~/.config/zathura/zathurarc: zathura/zathurarc
     # Git
