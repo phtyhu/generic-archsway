@@ -1,3 +1,4 @@
 *.pkg.tar.xz
 mpv/watch_later
 .tempconf/*
+GUI-base/sway/config.d/*.l10n.conf
