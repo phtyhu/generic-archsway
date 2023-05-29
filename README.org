@@ -63,9 +63,7 @@ For example, if you edited or created some configuration files under the directo
     ...
 #+end_src
 Apparently, the left part is the original path, and the right part is the relative path under =~/confrepo= .
-#+end_quote
 
-#+begin_quote
 All the same for single files, say if you edited or created a configuration file =~/.local/share/abc/foo/settings.conf= , then:
 - Copy this file to some suitable place under =~/confrepo= , e.g. =~/confrepo/foo/settings.conf= .
 - Edit =~/confrepo/install.conf.yaml= and add one corresponding line in the =- link:= part:

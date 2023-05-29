@@ -68,9 +68,7 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
     ...
 #+end_src
 显然，左边的是原路径，而右边的是 =~/confrepo= 下的相对路径。
-#+end_quote
 
-#+begin_quote
 单文件是完全同理的，比如你编辑或创建了某个配置文件 =~/.local/share/abc/foo/settings.conf= ，那么：
 - 将此文件复制到 =~/confrepo= 下的某个合适的位置，比如 =~/confrepo/foo/settings.conf= 。
 - 编辑 =~/confrepo/install.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
