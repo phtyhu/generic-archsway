@@ -50,6 +50,7 @@ After that, run =vifm ~/.config/sway/config.d= to look up and custom the configs
 *** Long-term Usage
 It's highly recommended that once you do more configurations (no matter about sway or not), save them in =~/confrepo= and manage it there.
 
+#+begin_quote
 For example, if you edited or created some configuration files under the directory =~/.config/something= , then:
 - Copy this directory to some suitable place under =~/confrepo= , e.g. =~/confrepo/something= .
 - Edit =~/confrepo/install.conf.yaml= and add one corresponding line in the =- link:= part:
@@ -62,7 +63,9 @@ For example, if you edited or created some configuration files under the directo
     ...
 #+end_src
 Apparently, the left part is the original path, and the right part is the relative path under =~/confrepo= .
+#+end_quote
 
+#+begin_quote
 All the same for single files, say if you edited or created a configuration file =~/.local/share/abc/foo/settings.conf= , then:
 - Copy this file to some suitable place under =~/confrepo= , e.g. =~/confrepo/foo/settings.conf= .
 - Edit =~/confrepo/install.conf.yaml= and add one corresponding line in the =- link:= part:
@@ -80,6 +83,7 @@ which will remove the files/directories at the original path
 and make symlinks at those places
 from the files/directories under =~/confrepo= ,
 according to the =- links:= part in =~/confrepo/install.conf.yaml= .
+#+end_quote
 
 Note that =~/confrepo= is actually a git repository with some submodules in it, so you can use git to manage it, such as archiving for backup, uploading to GitHub for sharing, transfering to another Arch Linux for quick setup, reverting to history versions, etc.
 
