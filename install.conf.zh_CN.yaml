@@ -13,7 +13,7 @@
     ~/.config/fontconfig/fonts.conf: GUI-look/font/fonts.zh_CN.conf
     # 输入法 -  input method
     ~/.config/fcitx5: fcitx5/config
-    ~/.config/fcitx5/rime/default.custom.yaml: fcitx5/rime/default.custom.yaml
+    ~/.local/share/fcitx5/rime/default.custom.yaml: fcitx5/rime/default.custom.yaml
 ###ENDOFLINK---
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
