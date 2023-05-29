@@ -1,0 +1,10 @@
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
+	branch = master
+[submodule "ohmyzsh"]
+	path = CLI-base/ohmyzsh
+	url = https://github.com/ohmyzsh/ohmyzsh
+[submodule "p10k"]
+	path = CLI-base/p10k
+	url = https://github.com/romkatv/powerlevel10k

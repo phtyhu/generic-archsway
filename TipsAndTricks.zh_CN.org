@@ -1,0 +1,4 @@
+* 使用技巧与建议
+
+** Vulkan 支持
+确保你已有 vulkan 支持，再编辑 =~/.local/bin/wrp-sway= 文件中的 =WLR_RENDERER= 的值，从 =gles2= 改成 =vulkan= 。

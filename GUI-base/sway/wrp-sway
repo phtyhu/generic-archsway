@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+cd ~/
+### 变量
+## 光标 - Cursor
+export XCURSOR_THEME=Bibata-Modern-Classic
+export XCURSOR_SIZE=24
+## JAVA
+export _JAVA_AWT_WM_NONREPARENTING=1
+## Qt
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export QT_QPA_PLATFORM="wayland"
+export QT_QPA_PLATFORMTHEME=qt5ct
+## XDG
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_DESKTOP=sway
+## 本地化 - Locale
+case "$(cat ~/.config/genv-locale.conf)" in
+"zh_CN") export LANG=zh_CN.UTF-8
+export LANGUAGE=zh_CN:en_US
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fcitx
+export GLFW_IM_MODULE=ibus
+export INPUT_METHOD=fcitx
+;;
+"en_US") export LANG=en_US.UTF-8
+export LANGUAGE=en_US
+;;
+esac
+## 杂项 - Misc
+export CLUTTER_BACKEND=wayland
+export SDL_VIDEODRIVER=wayland
+#export WLR_RENDERER=vulkan
+export WLR_RENDERER=gles2
+#export LIBVA_DRIVER_NAME=
+#export VDPAU_DRIVER=
+## 火狐 - Firefox
+export MOZ_ENABLE_WAYLAND=1
+export MOZ_DBUS_REMOTE=1
+## 默认程序 - Default Programs
+export EDITOR=nvim
+export DIFFPROG='nvim -d'
+export VISUAL=nvim
+export PAGER=less
+export BROWSER=firefox
+
+### 启动 - Launch
+exec sway

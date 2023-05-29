@@ -1,0 +1,5 @@
+* Tips and Tricks
+[[TipsAndTricks.zh_CN.org][简体中文]]
+
+** Vulkan support
+Ensure you have vulkan supported, then edit the value of =WLR_RENDERER= from =gles2= to =vulkan= in =~/.local/bin/wrp-sway= .

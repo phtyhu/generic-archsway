@@ -1,0 +1,2 @@
+#!/bin/sh
+zenity --entry --text '------------输入文字------------' --title 'LinuxIMEhelper'|head -c -1|wl-copy

@@ -1,0 +1,42 @@
+#!/bin/bash
+# vim:fileencoding=utf-8:ft=config:fdm=marker foldlevel=0
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+nofail(){
+while true;do if $@
+then break;fi;done
+}
+
+y(){
+nofail yay -S --needed --noconfirm $1
+}
+
+# 安装基本包 - Install basic pkgs {{{
+sudo pacman -S --needed --noconfirm \
+git base-devel curl \
+zsh neovim vifm exa bat fzf fd \
+sway swayidle swaybg waybar \
+mako network-manager-applet polkit-gnome \
+gammastep blueman swayidle slurp grim swappy \
+zenity alacritty xorg-xwayland playerctl wofi \
+ttf-firacode-nerd qt5ct qt6ct
+
+if [ $(cat .tempconf/genv-locale.conf) == "zh_CN" ] ; then
+sudo pacman -S --needed --noconfirm wqy-microhei fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt fcitx5-nord fcitx5-rime
+fi
+# }}}
+
+# 使用 yay 安装 AUR 的包 - Install pkgs from AUR using yay {{{
+if test -f "/usr/bin/yay";
+then echo "/usr/bin/yay found."
+else echo "/usr/bin/yay not found, now install yay:"
+t=~/.cache/yay/; mkdir -p $t; cd $t
+nofail git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
+nofail makepkg -si --noconfirm
+fi
+
+y swaylock-effects
+y clightd
+sudo systemctl enable clightd.service
+# }}}

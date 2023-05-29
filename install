@@ -1,0 +1,120 @@
+#!/bin/bash
+# vim:fileencoding=utf-8:ft=config:fdm=marker foldlevel=0
+# @Author: phtyhu (https://github.com/phtyhu)
+# @Title: 带引导的 dotbot 多语言安装脚本
+# Multilingual dotbot install script with guidance
+#
+# 注：使用 vim 时可以用 `za` 与 `zi` 切换折叠
+# note: Use `za` or `zi` to toggle folding in vim.
+
+nofail(){
+while true;do if $@
+then break;fi;done
+}
+
+set -e
+DOTBOT_DIR="dotbot"
+DOTBOT_BIN="bin/dotbot"
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG="install.conf.yaml"
+CONFIG_zh_CN="install.conf.zh_CN.yaml"
+CONFIGPATH="${BASEDIR}"/"${CONFIG}"
+CONFIGPATH_zh_CN="${BASEDIR}"/"${CONFIG_zh_CN}"
+cd "${BASEDIR}"
+mkdir -p .tempconf
+
+# 不存在符合标准的 genv-locale.conf 时询问 - Prompt when no standard genv-locale.conf exists {{{
+if test -f .tempconf/ascii; then rm .tempconf/ascii;dplang=ascii;else dplang=unicode;fi
+case "$(cat .tempconf/genv-locale.conf)" in
+"zh_CN"|"en_US") sleep 0 ;;
+*) while true;do
+case $dplang in
+"ascii")
+echo "
+1=zh_CN: Simplified Chinese, including input method, font, etc
+2=en_US: English"
+;;
+"unicode")
+echo "
+1=zh_CN: 简体中文，包括输入法、字体等
+2=en_US: English"
+;;
+esac
+read -p "Select a number: " p
+case $p in
+[1]) echo zh_CN > .tempconf/genv-locale.conf ;break ;;
+[2]) echo en_US > .tempconf/genv-locale.conf ;break ;;
+*) echo -e "Please enter the \e[31mcorresponding number\e[0m."
+esac 
+done ;; esac
+if [ $dplang = ascii ];then dplang="en_US";else dplang="$(cat .tempconf/genv-locale.conf)";fi
+# }}}
+
+# 初次安装前安装依赖，并提示确认 - Install dependencies and prompt for confirming for the first time {{{
+if test -f .tempconf/installed; then sleep 0; else
+./install-deps
+case "$dplang" in
+"zh_CN")
+echo -e "\e[31m注意：\e[0m
+此脚本会根据\e[33m ${CONFIGPATH} , ${CONFIGPATH_zh_CN} \e[0m强制创建符号链接。
+\e[31m若相关文件与目录已存在，则会被覆盖！！
+在执行前请务必确保你已经备份重要文件或目录！！！\e[0m
+
+输入 \e[33mshow\e[0m 以查看将被覆盖的文件与目录的列表。
+输入 \e[33myes\e[0m 以\e[31m确认执行\e[0m此脚本。
+输入 \e[33mno\e[0m 以退出。"
+;;
+"en_US")
+CONFIG="install.conf.yaml"
+CONFIGPATH="${BASEDIR}"/"${CONFIG}"
+echo -e "
+\e[31mATTENTION:\e[0m
+The script will forcely create symlinks according to \e[33m${CONFIGPATH} \e[0m.
+\e[31mIf the related file or directory already exists, it will be OVERWRITTEN PERMANENTLY!!
+MAKE SURE YOU HAVE BACKUPED FOR IMPORTANT FILES/DIRECTORIES!!! \e[0m
+
+Enter \e[33mshow\e[0m to show the list of file and directories which will be overwritten.
+Enter \e[33myes\e[0m to \e[31mCONFIRM EXECUSION\e[0m of this script.
+Enter \e[33mno\e[0m to exit."
+;;
+esac
+while true;do
+read -p "[yes/show/no]: " p
+case $p in
+"show")
+case "$(cat .tempconf/genv-locale.conf)" in
+"en_US")
+./listoverwrite "${CONFIGPATH}"|sort|uniq|less
+;;
+"zh_CN")
+cat <(./listoverwrite "${CONFIGPATH}") <(./listoverwrite "${CONFIGPATH_zh_CN}")|sort|uniq|less
+;;
+esac
+;;
+"yes") break;;
+"no") exit 0;;
+esac
+done
+fi
+# }}}
+
+# 安装 - Install {{{
+nofail git submodule update --init --recursive "${DOTBOT_DIR}"
+ 
+case "$(cat .tempconf/genv-locale.conf)" in
+"zh_CN")
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_zh_CN}" "${@}"
+;;
+"en_US")
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+;;
+esac
+touch ${BASEDIR}/.tempconf/installed
+# }}}
+
+# 切换 shell - Switch shell {{{
+if [ $(awk -F: -v user="$(whoami)" '$1 == user {print $NF}' /etc/passwd) != /bin/zsh ]
+then nofail sudo chsh -s /bin/zsh $(whoami)
+fi
+# }}}

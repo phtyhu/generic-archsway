@@ -1,0 +1,73 @@
+- defaults:
+    link:
+      force: true
+      relink: true
+      create: true
+
+- clean: ["~"]
+###BEGINOFLINK---
+- link:
+    ###--- 命令行 - CLI
+    # bash
+    ~/.bashrc: CLI-base/.bashrc
+    ~/.bash_profile: CLI-base/.bash_profile
+    # zsh
+    ~/.zshrc: CLI-base/.zshrc
+    ~/.p10k.zsh: CLI-base/.p10k.zsh
+    ~/.local/share/p10k: CLI-base/p10k
+    ~/.local/share/ohmyzsh: CLI-base/ohmyzsh
+    # 终端 - terminal
+    ~/.config/alacritty: CLI-base/alacritty
+    # 脚本 - Scipts
+    ~/.local/scripts: CLI-base/scripts
+    ###--- 图形环境 - Graphical Environment
+    # sway
+    ~/.config/sway/config: GUI-base/sway/config
+    ~/.config/sway/config.d: GUI-base/sway/config.d
+    ~/.local/bin/wrp-sway: GUI-base/sway/wrp-sway
+    # swaylock
+    ~/.config/swaylock/config: GUI-base/swaylock/config
+    # waybar
+    ~/.config/waybar/config: GUI-base/waybar/config
+    ~/.config/waybar/style.css: GUI-base/waybar/style.css
+    # wofi
+    ~/.config/wofi/config: GUI-base/wofi/config
+    ~/.config/wofi/style.css: GUI-base/wofi/style.css
+    ~/.local/bin/wofi-power: GUI-base/wofi/wofi-power
+    ~/.local/bin/wofi-windows: GUI-base/wofi/wofi-windows
+    # mako
+    ~/.config/mako/config: GUI-base/mako/config
+    ###--- 全局外观 - Global Appearance
+    # Qt
+    ~/.config/qt5ct: GUI-look/qt/qt5ct
+    ~/.config/qt6ct: GUI-look/qt/qt6ct
+    # GTK
+    ~/.config/gtk-2.0/gtk.css: GUI-look/gtk/gtk.css
+    ~/.config/gtk-2.0/settings.ini: GUI-look/gtk/settings.ini
+    ~/.config/gtk-3.0/gtk.css: GUI-look/gtk/gtk.css
+    ~/.config/gtk-3.0/settings.ini: GUI-look/gtk/settings.ini
+    ~/.local/share/nwg-look/gsettings: GUI-look/gtk/nwg-look/gsettings
+    ~/.icons/oomox-tokyo-night: GUI-look/gtk/icons/oomox-tokyo-night
+    ~/.themes/oomox-tokyo-night: GUI-look/gtk/themes/oomox-tokyo-night
+    # 字体 -  fonts
+    ~/.config/fontconfig/fonts.conf: GUI-look/font/fonts.conf
+    # 壁纸 - wallpaper
+    ~/.local/wallpapers: GUI-look/wallpapers
+    ###--- 杂项 - Misc
+    # temp config
+    ~/.config/genv-locale.conf: .tempconf/genv-locale.conf
+    # Neovim
+    ~/.config/nvim: nvim
+    # vifm
+    ~/.config/vifm: vifm
+    # zathura
+    ~/.config/zathura/zathurarc: zathura/zathurarc
+    # Git
+    #~/.gitconfig: git/.gitconfig
+    # MPV
+    ~/.config/mpv/mpv.conf: mpv/mpv.conf
+    ~/.config/mpv/input.conf: mpv/input.conf
+    ~/.config/mpv/scripts: mpv/scripts
+###ENDOFLINK---
+- shell:
+    - [~/.local/scripts/nofail git submodule update --init --recursive, 安装子模块 - Installing submodules]

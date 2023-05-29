@@ -1,0 +1,19 @@
+- defaults:
+    link:
+      force: true
+      relink: true
+      create: true
+
+- clean: ["~"]
+###BEGINOFLINK---
+- link:
+    ###--- 图形环境 - Graphical Environment
+    ~/.config/sway/config.d/zh_CN.conf: GUI-base/sway/l10n/zh_CN.conf
+    # 字体 -  fonts
+    ~/.config/fontconfig/fonts.conf: GUI-look/font/fonts.zh_CN.conf
+    # 输入法 -  input method
+    ~/.config/fcitx5: fcitx5/config_fcitx5
+    ~/.local/share/fcitx5/rime: fcitx5/share_fcitx5/rime
+###ENDOFLINK---
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
