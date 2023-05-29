@@ -12,8 +12,7 @@
     # 字体 -  fonts
     ~/.config/fontconfig/fonts.conf: GUI-look/font/fonts.zh_CN.conf
     # 输入法 -  input method
-    ~/.config/fcitx5: fcitx5/config_fcitx5
-    #~/.local/share/fcitx5/rime: fcitx5/share_fcitx5/rime
+    ~/.config/fcitx5: fcitx5/config
 ###ENDOFLINK---
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
