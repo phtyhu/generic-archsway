@@ -15,11 +15,13 @@ nofail yay -S --needed --noconfirm $1
 sudo pacman -S --needed --noconfirm \
 git base-devel curl \
 zsh neovim vifm exa bat fzf fd \
-mesa xorg-xwayland sway swayidle swaybg waybar \
+mesa xorg-xwayland sway swayidle swaybg \
 mako network-manager-applet polkit-gnome \
 gammastep blueman swayidle slurp grim swappy \
 zenity alacritty playerctl wofi \
 ttf-firacode-nerd qt5ct qt6ct
+# If waybar-hyprland exists, then there's no need to install waybar (perhaps).
+if test -f /usr/bin/waybar;then sleep 0;else sudo pacman -S --needed --noconfirm waybar;fi
 
 if [ $(cat .tempconf/genv-locale.conf) == "zh_CN" ] ; then
 sudo pacman -S --needed --noconfirm wqy-microhei fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt fcitx5-nord fcitx5-rime

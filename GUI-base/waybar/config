@@ -1,5 +1,9 @@
 {
     "layer": "top",
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "margin-left": 0,
+    "margin-right": 0,
     "modules-left": ["sway/mode"],
     "modules-center": [],
     "modules-right": ["sway/workspaces", "tray", "idle_inhibitor", "backlight", "pulseaudio", "battery", "sway/language", "clock"],
@@ -38,17 +42,16 @@
         "device": "intel_backlight",
         "format": "{percent}% {icon}",
         "format-icons": ["", ""],
-        "on-scroll-up": "light -A 1",
-        "on-scroll-down": "light -U 1"
+        "on-scroll-up": "busctl call org.clightd.clightd /org/clightd/clightd/Backlight2 org.clightd.clightd.Backlight2 Raise d\(du\) 0.10 0.10 1",
+        "on-scroll-down": "busctl call org.clightd.clightd /org/clightd/clightd/Backlight2 org.clightd.clightd.Backlight2 Lower d\(du\) 0.10 0.10 1"
     },
     "battery": {
         "format": "{capacity}% {icon}",
         "format-icons": ["", "", "", "", ""]
     },
     "clock": {
-      "format": "{:%H:%M %Z}",
+      "format": "{:%H:%M:%S}",
       "tooltip": true,
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-      "timezones": ["Europe/Paris", "UTC"]
     }
 }

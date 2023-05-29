@@ -3,7 +3,7 @@ font=Inter 14
 
 clock
 timestr=%R
-datestr=%a, %e of %B
+datestr=%a, %B.%d
 
 screenshots
 
