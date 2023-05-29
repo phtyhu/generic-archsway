@@ -15,10 +15,10 @@ nofail yay -S --needed --noconfirm $1
 sudo pacman -S --needed --noconfirm \
 git base-devel curl \
 zsh neovim vifm exa bat fzf fd \
-sway swayidle swaybg waybar \
+mesa xorg-xwayland sway swayidle swaybg waybar \
 mako network-manager-applet polkit-gnome \
 gammastep blueman swayidle slurp grim swappy \
-zenity alacritty xorg-xwayland playerctl wofi \
+zenity alacritty playerctl wofi \
 ttf-firacode-nerd qt5ct qt6ct
 
 if [ $(cat .tempconf/genv-locale.conf) == "zh_CN" ] ; then
