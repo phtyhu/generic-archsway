@@ -55,6 +55,7 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
 *** 长期使用
 非常推荐的是，当你进行了一些自定义配置（无论是否是 sway 相关的）时，都将它们保存到 =~/confrepo= 并且在那里管理它们。
 
+#+begin_quote
 比如，当你编辑或创建了某些配置文件在目录 =~/.config/something= 下，那么：
 - 将此目录复制到 =~/confrepo= 下的某个合适的位置，比如 =~/confrepo/something= 。
 - 编辑 =~/confrepo/install.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
@@ -67,7 +68,9 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
     ...
 #+end_src
 显然，左边的是原路径，而右边的是 =~/confrepo= 下的相对路径。
+#+end_quote
 
+#+begin_quote
 单文件是完全同理的，比如你编辑或创建了某个配置文件 =~/.local/share/abc/foo/settings.conf= ，那么：
 - 将此文件复制到 =~/confrepo= 下的某个合适的位置，比如 =~/confrepo/foo/settings.conf= 。
 - 编辑 =~/confrepo/install.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
@@ -85,6 +88,7 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
 删除原路径的文件或目录，
 并在这些位置创建符号链接
 （来源是 =~/confrepo= 下的对应文件及目录）。
+#+end_quote
 
 注意 =~/confrepo= 实际上是一个 git 仓库（且其中包含了一些子模块），所以你可以使用 git 来管理它，比如存档备份、上传到 GitHub 来分享、发送到其它设备上以快速部署、回溯历史记录，等等。
 
