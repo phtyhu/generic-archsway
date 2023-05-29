@@ -42,8 +42,8 @@
         "device": "intel_backlight",
         "format": "{percent}% {icon}",
         "format-icons": ["", ""],
-        "on-scroll-up": "busctl call org.clightd.clightd /org/clightd/clightd/Backlight2 org.clightd.clightd.Backlight2 Raise d\(du\) 0.10 0.10 1",
-        "on-scroll-down": "busctl call org.clightd.clightd /org/clightd/clightd/Backlight2 org.clightd.clightd.Backlight2 Lower d\(du\) 0.10 0.10 1"
+        "on-scroll-up": "busctl call org.clightd.clightd /org/clightd/clightd/Backlight2 org.clightd.clightd.Backlight2 Raise d\\(du\\) 0.10 0.10 1",
+        "on-scroll-down": "busctl call org.clightd.clightd /org/clightd/clightd/Backlight2 org.clightd.clightd.Backlight2 Lower d\\(du\\) 0.10 0.10 1"
     },
     "battery": {
         "format": "{capacity}% {icon}",
