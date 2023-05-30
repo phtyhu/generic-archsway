@@ -10,7 +10,7 @@
     ###--- 图形环境 - Graphical Environment
     ~/.config/sway/config.d/zh_CN.l10n.conf: GUI-base/sway/l10n/zh_CN.l10n.conf
     # 字体 -  fonts
-    ~/.config/fontconfig/fonts.conf: GUI-look/font/fonts.zh_CN.conf
+    ~/.config/fontconfig/conf.d: GUI-look/font/conf.zh_CN.d
     # 输入法 -  input method
     ~/.config/fcitx5: fcitx5/config
     ~/.local/share/fcitx5/rime/default.custom.yaml: fcitx5/rime/default.custom.yaml

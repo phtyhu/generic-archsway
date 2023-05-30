@@ -50,7 +50,7 @@
     ~/.icons/oomox-tokyo-night: GUI-look/gtk/icons/oomox-tokyo-night
     ~/.themes/oomox-tokyo-night: GUI-look/gtk/themes/oomox-tokyo-night
     # 字体 -  fonts
-    ~/.config/fontconfig/fonts.conf: GUI-look/font/fonts.conf
+    ~/.config/fontconfig/conf.d: GUI-look/font/conf.en_US.d
     # 壁纸 - wallpaper
     ~/.local/wallpapers: GUI-look/wallpapers
     ###--- 杂项 - Misc

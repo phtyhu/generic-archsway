@@ -107,6 +107,7 @@ Currently help needed:
 This project is originally based on [[https://github.com/Jguer/dotfiles][Jguer/dotfiles]].
 
 Many thanks to all of the FOSS projects related to this project.
+- Fontconfig originally based on [[https://github.com/rydesun/dotfiles][rydesun/dotfiles]]
 
 Many thanks to all of the contributors.
 

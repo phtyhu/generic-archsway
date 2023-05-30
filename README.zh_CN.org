@@ -112,7 +112,7 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
 此项目原本基于 [[https://github.com/Jguer/dotfiles][Jguer/dotfiles]] 。
 
 感谢与此项目相关的所有自由开源项目。
-
+- Fontconfig 原本基于 [[https://github.com/rydesun/dotfiles][rydesun/dotfiles]]
 感谢此项目的所有贡献者。
 
 ** 许可
