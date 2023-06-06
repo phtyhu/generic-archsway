@@ -11,6 +11,10 @@ nofail(){
 while true;do if $@
 then break;fi;done
 }
+# 定义颜色 - Define colors
+cNORMAL='\e[0m'
+cCAUTION='\e[31m'
+cNOTE='\e[33m'
 
 set -e
 DOTBOT_DIR="dotbot"
@@ -44,7 +48,7 @@ read -p "Select a number: " p
 case $p in
 [1]) echo zh_CN > .tempconf/genv-locale.conf ;break ;;
 [2]) echo en_US > .tempconf/genv-locale.conf ;break ;;
-*) echo -e "Please enter the \e[31mcorresponding number\e[0m."
+*) echo -e "Please enter the ${cCAUTION}corresponding number${cNORMAL}."
 esac 
 done ;; esac
 if [ $dplang = ascii ];then dplang="en_US";else dplang="$(cat .tempconf/genv-locale.conf)";fi
@@ -55,27 +59,27 @@ if test -f .tempconf/installed; then sleep 0; else
 ./install-deps
 case "$dplang" in
 "zh_CN")
-echo -e "\e[31m注意：\e[0m
-此脚本会根据\e[33m ${CONFIGPATH} , ${CONFIGPATH_zh_CN} \e[0m强制创建符号链接。
-\e[31m若相关文件与目录已存在，则会被覆盖！！
-在执行前请务必确保你已经备份重要文件或目录！！！\e[0m
+echo -e "${cCAUTION}注意：${cNORMAL}
+此脚本会根据${cNOTE} ${CONFIGPATH} , ${CONFIGPATH_zh_CN} ${cNORMAL}强制创建符号链接。
+${cCAUTION}若相关文件与目录已存在，则会被覆盖！！
+在执行前请务必确保你已经备份重要文件或目录！！！${cNORMAL}
 
-输入 \e[33mshow\e[0m 以查看将被覆盖的文件与目录的列表。
-输入 \e[33myes\e[0m 以\e[31m确认执行\e[0m此脚本。
-输入 \e[33mno\e[0m 以退出。"
+输入 ${cNOTE}show${cNORMAL} 以查看将被覆盖的文件与目录的列表。
+输入 ${cNOTE}yes${cNORMAL} 以${cCAUTION}确认执行${cNORMAL}此脚本。
+输入 ${cNOTE}no${cNORMAL} 以退出。"
 ;;
 "en_US")
 CONFIG="install.conf.yaml"
 CONFIGPATH="${BASEDIR}"/"${CONFIG}"
 echo -e "
-\e[31mATTENTION:\e[0m
-The script will forcely create symlinks according to \e[33m${CONFIGPATH} \e[0m.
-\e[31mIf the related file or directory already exists, it will be OVERWRITTEN PERMANENTLY!!
-MAKE SURE YOU HAVE BACKUPED FOR IMPORTANT FILES/DIRECTORIES!!! \e[0m
+${cCAUTION}ATTENTION:${cNORMAL}
+The script will forcely create symlinks according to ${cNOTE}${CONFIGPATH} ${cNORMAL}.
+${cCAUTION}If the related file or directory already exists, it will be OVERWRITTEN PERMANENTLY!!
+MAKE SURE YOU HAVE BACKUPED FOR IMPORTANT FILES/DIRECTORIES!!! ${cNORMAL}
 
-Enter \e[33mshow\e[0m to show the list of file and directories which will be overwritten.
-Enter \e[33myes\e[0m to \e[31mCONFIRM EXECUSION\e[0m of this script.
-Enter \e[33mno\e[0m to exit."
+Enter ${cNOTE}show${cNORMAL} to show the list of file and directories which will be overwritten.
+Enter ${cNOTE}yes${cNORMAL} to ${cCAUTION}CONFIRM EXECUSION${cNORMAL} of this script.
+Enter ${cNOTE}no${cNORMAL} to exit."
 ;;
 esac
 while true;do
