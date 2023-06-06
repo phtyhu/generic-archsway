@@ -7,6 +7,10 @@
 # 注：使用 vim 时可以用 `za` 与 `zi` 切换折叠
 # note: Use `za` or `zi` to toggle folding in vim.
 
+catlocale(){
+cat .tempconf/genv-locale.conf
+}
+
 nofail(){
 while true;do if $@
 then break;fi;done
@@ -29,7 +33,7 @@ mkdir -p .tempconf
 
 # 不存在符合标准的 genv-locale.conf 时询问 - Prompt when no standard genv-locale.conf exists {{{
 if test -f .tempconf/ascii; then rm .tempconf/ascii;dplang=ascii;else dplang=unicode;fi
-case "$(cat .tempconf/genv-locale.conf)" in
+case "$(catlocale)" in
 "zh_CN"|"en_US") sleep 0 ;;
 *) while true;do
 case $dplang in
@@ -51,7 +55,7 @@ case $p in
 *) echo -e "Please enter the ${cCAUTION}corresponding number${cNORMAL}."
 esac 
 done ;; esac
-if [ $dplang = ascii ];then dplang="en_US";else dplang="$(cat .tempconf/genv-locale.conf)";fi
+if [ $dplang = ascii ];then dplang="en_US";else dplang="$(catlocale)";fi
 # }}}
 
 # 初次安装前安装依赖，并提示确认 - Install dependencies and prompt for confirming for the first time {{{
@@ -86,7 +90,7 @@ while true;do
 read -p "[yes/show/no]: " p
 case $p in
 "show")
-case "$(cat .tempconf/genv-locale.conf)" in
+case "$(catlocale)" in
 "en_US")
 ./listoverwrite "${CONFIGPATH}"|sort|uniq|less
 ;;
@@ -105,7 +109,7 @@ fi
 # 安装 - Install {{{
 nofail git submodule update --init --recursive "${DOTBOT_DIR}"
  
-case "$(cat .tempconf/genv-locale.conf)" in
+case "$(catlocale)" in
 "zh_CN")
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_zh_CN}" "${@}"
