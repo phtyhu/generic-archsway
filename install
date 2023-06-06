@@ -7,6 +7,9 @@
 # 注：使用 vim 时可以用 `za` 与 `zi` 切换折叠
 # note: Use `za` or `zi` to toggle folding in vim.
 
+# 初始化 - Initialize {{{
+set -e
+## 定义函数 - Define Functions
 catlocale(){
 cat .tempconf/genv-locale.conf
 }
@@ -19,8 +22,7 @@ then break;fi;done
 cNORMAL='\e[0m'
 cCAUTION='\e[31m'
 cNOTE='\e[33m'
-
-set -e
+# 定义路径 - Define paths
 DOTBOT_DIR="dotbot"
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -30,12 +32,19 @@ CONFIGPATH="${BASEDIR}"/"${CONFIG}"
 CONFIGPATH_zh_CN="${BASEDIR}"/"${CONFIG_zh_CN}"
 cd "${BASEDIR}"
 mkdir -p .tempconf
+# }}}
 
-# 不存在符合标准的 genv-locale.conf 时询问 - Prompt when no standard genv-locale.conf exists {{{
+# 显示语言与本地化 - Display language and Localization {{{
+## 由 install-ascii 调用此脚本时采用 ascii 显示模式（即英语），否则使用 unicode
+## When this script is launched by install-ascii, use ascii display mode(i.e. English only), else use unicode.
 if test -f .tempconf/ascii; then rm .tempconf/ascii;dplang=ascii;else dplang=unicode;fi
+## 仅当不存在符合标准的 genv-locale.conf 时进行下一步的询问
+## Prompt next only when no standard genv-locale.conf exists
 case "$(catlocale)" in
 "zh_CN"|"en_US") sleep 0 ;;
 *) while true;do
+## 询问要使用的语言环境
+## Prompt to ask what language environment to be used
 case $dplang in
 "ascii")
 echo "
@@ -55,6 +64,8 @@ case $p in
 *) echo -e "Please enter the ${cCAUTION}corresponding number${cNORMAL}."
 esac 
 done ;; esac
+## 在 ascii 显示模式下，一律将显示语言变为英语；否则与选择的语言环境一致
+## When in ascii display mode, set display language to English, else set to the same as what choosed before.
 if [ $dplang = ascii ];then dplang="en_US";else dplang="$(catlocale)";fi
 # }}}
 
@@ -73,8 +84,6 @@ ${cCAUTION}若相关文件与目录已存在，则会被覆盖！！
 输入 ${cNOTE}no${cNORMAL} 以退出。"
 ;;
 "en_US")
-CONFIG="install.conf.yaml"
-CONFIGPATH="${BASEDIR}"/"${CONFIG}"
 echo -e "
 ${cCAUTION}ATTENTION:${cNORMAL}
 The script will forcely create symlinks according to ${cNOTE}${CONFIGPATH} ${cNORMAL}.
@@ -123,6 +132,11 @@ touch ${BASEDIR}/.tempconf/installed
 
 # 切换 shell - Switch shell {{{
 if [ $(awk -F: -v user="$(whoami)" '$1 == user {print $NF}' /etc/passwd) != /bin/zsh ]
-then nofail sudo chsh -s /bin/zsh $(whoami)
+then 
+  case "$dplang" in
+    "zh_CN")echo "正在将默认 shell 切换到 zsh。";;
+    "en_US")echo "Changing default shell to zsh.";;
+  esac
+  nofail sudo chsh -s /bin/zsh $(whoami)
 fi
 # }}}
