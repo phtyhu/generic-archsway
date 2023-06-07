@@ -36,19 +36,18 @@ cNORMAL='\e[0m'
 cCAUTION='\e[31m'
 cNOTE='\e[33m'
 # 定义路径 - Define paths
-DOTBOT_DIR="dotbot"
-DOTBOT_BIN="bin/dotbot"
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG="install.conf.yaml"
-CONFIG_zh_CN="install.conf.zh_CN.yaml"
-CONFIGPATH="${BASEDIR}"/"${CONFIG}"
-CONFIGPATH_zh_CN="${BASEDIR}"/"${CONFIG_zh_CN}"
-cd "${BASEDIR}"
+dotbot_dir="dotbot"
+dotbot_bin="bin/dotbot"
+basedir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+config="insdot.conf.yaml"
+config_zh_CN="insdot.conf.zh_CN.yaml"
+configpath="${basedir}"/"${config}"
+configpath_zh_CN="${basedir}"/"${config_zh_CN}"
+cd "${basedir}"
 mkdir -p .tempconf
 # }}}
 
-# getopt {{{
-## 定义帮助函数 - Define help function
+# 定义帮助函数 - Define help function {{{
 showhelp(){
   case "$LANG" in
     "zh_CN.UTF-8")
@@ -83,42 +82,56 @@ ${cNOTE}  -r, --reset        ${cNORMAL}Reset mode (delete .tempconf)"
   ;;
 esac
 }
+# }}}
 
-## 解析参数并执行命令 - Parse parameters and execute commands
-p=$(getopt -o rahcld:q -l reset,listow:,listcr:,ascii,help,lang:,askow:,deps -n "$0" -- "$@")
+# getopt {{{
+para=$(getopt -o rahcld:q -l dryrun,reset,listow:,listcr:,ascii,help,lang:,askow:,deps -n "$0" -- "$@")
 [ $? != 0 ] && echo "$0: Error when getopt, please recheck parameters." && exit 1
-eval set -- "$p"
+## 第一阶段 - Phase 1
+# 无视参数顺序，先执行以下选项
+# ignore parameter's order, execute options below first
+eval set -- "$para"
 while true ; do
   case "$1" in
     -h|--help) showhelp;exit;;
     --listow) listoverwrite $2;exit;;
     --listcr) listcreate $2;exit;;
+    -r|--reset) rm -rf .tempconf/*; shift ;;
+    --) break ;;
+    *) shift ;;
+  esac
+done
+## 第二阶段 - Phase 2
+eval set -- "$para"
+while true ; do
+  case "$1" in
+    -r|--reset) shift;;
     -l|--lang)
     case $2 in
       "zh_CN") echo zh_CN>.tempconf/genv-locale.conf;;
       "en_US") echo en_US>.tempconf/genv-locale.conf;;
-      "") echo -e "${cCAUTION}No argument for --lang.${cNORMAL}";exit 1;;
-      *) echo -e "${cCAUTION}Wrong argument for --lang.${cNORMAL}";exit 1;;
+      "") echo -e "${cCAUTION}No argument for --lang${cNORMAL}";exit 1;;
+      *) echo -e "${cCAUTION}Wrong argument for --lang${cNORMAL}";exit 1;;
     esac;shift 2;;
-  -a|--ascii) touch .tempconf/ascii; shift ;;
-  -d|--deps) INSTDEPS=y;shift;;
-  -c) ASKOW=y;shift;;
-  --askow)
-  case $2 in
-    ""|"y") ASKOW=y;;
-    "n") ASKOW=n;;
-    *) echo -e "${cCAUTION}Wrong argument for --askow.${cNORMAL}";exit 1;;
-esac; shift 2 ;;
-  -r|--reset) rm -rf .tempconf/*; shift ;;
-  --) break ;;
-  *) echo -e "$0: Wrong parameters.";exit 1;;
-esac
+    -a|--ascii) touch .tempconf/ascii; shift ;;
+    -d|--deps) instdeps=y;shift;;
+    --dryrun) dryrun=y;shift;; # 供调试使用
+    -c) askow=y;shift;;
+    --askow)
+    case $2 in
+      ""|"y") askow=y;;
+      "n") askow=n;;
+      *) echo -e "${cCAUTION}Wrong argument for --askow${cNORMAL}";exit 1;;
+    esac; shift 2 ;;
+    --) break ;;
+    *) echo -e "$0: Wrong parameters.";exit 1;;
+  esac
 done
 # }}}
 
 # 显示语言与本地化 - Display language and Localization {{{
-## 由 install-ascii 调用此脚本时采用 ascii 显示模式（即英语），否则使用 unicode
-## When this script is launched by install-ascii, use ascii display mode(i.e. English only), else use unicode.
+## 当 .tempconf/ascii 存在时，采用 ascii 显示模式（即英语），否则使用 unicode
+## When .tempconf/ascii exists, use ascii display mode(i.e. English only), else use unicode.
 if test -f .tempconf/ascii; then rm .tempconf/ascii;dplang=ascii;else dplang=unicode;fi
 ## 仅当不存在符合标准的 genv-locale.conf 时进行下一步的询问
 ## Prompt next only when no standard genv-locale.conf exists
@@ -153,23 +166,23 @@ if [ $dplang = ascii ];then dplang="en_US";else dplang="$(catlocale)";fi
 
 # 初次安装时 - For first time installation {{{
 if test -f .tempconf/installed; then sleep 0; else
-  if [ -n ${ASKOW} ];then ASKOW=y;fi
-  if [ -n ${INSTDEPS} ];then INSTDEPS=y;fi
+  if [ -n ${askow} ];then sleep 0;else askow=y;fi
+  if [ -n ${instdeps} ];then instdeps=y;fi
 fi
 # }}}
 
 # 安装依赖 - Install dependencies {{{
-case $INSTDEPS in y)
+case $instdeps in y)
 ./install-deps
 ;;esac
 # }}}
 
 # 确认是否覆盖 - Prompt for confirming overwriting {{{
-case $ASKOW in y)
+case $askow in y)
 case "$dplang" in
 "zh_CN")
 echo -e "${cCAUTION}注意：${cNORMAL}
-此脚本会根据${cNOTE} ${CONFIGPATH} , ${CONFIGPATH_zh_CN} ${cNORMAL}强制创建符号链接。
+此脚本会根据${cNOTE} ${configpath} , ${configpath_zh_CN} ${cNORMAL}强制创建符号链接。
 ${cCAUTION}若相关文件与目录已存在，则会被覆盖！！
 在执行前请务必确保你已经备份重要文件或目录！！！${cNORMAL}
 
@@ -180,7 +193,7 @@ ${cCAUTION}若相关文件与目录已存在，则会被覆盖！！
 "en_US")
 echo -e "
 ${cCAUTION}ATTENTION:${cNORMAL}
-The script will forcely create symlinks according to ${cNOTE}${CONFIGPATH} ${cNORMAL}.
+The script will forcely create symlinks according to ${cNOTE}${configpath} ${cNORMAL}.
 ${cCAUTION}If the related file or directory already exists, it will be OVERWRITTEN PERMANENTLY!!
 MAKE SURE YOU HAVE BACKUPED FOR IMPORTANT FILES/DIRECTORIES!!! ${cNORMAL}
 
@@ -195,10 +208,10 @@ case $p in
 "show")
 case "$(catlocale)" in
 "en_US")
-listoverwrite "${CONFIGPATH}"|sort|uniq|less
+listoverwrite "${configpath}"|sort|uniq|less
 ;;
 "zh_CN")
-cat <(listoverwrite "${CONFIGPATH}") <(listoverwrite "${CONFIGPATH_zh_CN}")|sort|uniq|less
+cat <(listoverwrite "${configpath}") <(listoverwrite "${configpath_zh_CN}")|sort|uniq|less
 ;;
 esac
 ;;
@@ -210,18 +223,20 @@ done
 # }}}
 
 # 安装 - Install {{{
-nofail git submodule update --init --recursive "${DOTBOT_DIR}"
-
-#case "$(catlocale)" in
-#"zh_CN")
-#"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
-#"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_zh_CN}" "${@}"
-#;;
-#"en_US")
-#"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
-#;;
-#esac
-touch ${BASEDIR}/.tempconf/installed
+nofail git submodule update --init --recursive "${dotbot_dir}"
+case $dryrun in y);; # 指定了 --dryrun 时什么也不做
+  *)
+case "$(catlocale)" in
+"zh_CN")
+"${basedir}/${dotbot_dir}/${dotbot_bin}" -d "${basedir}" -c "${config}" "${@}"
+"${basedir}/${dotbot_dir}/${dotbot_bin}" -d "${basedir}" -c "${config_zh_CN}" "${@}"
+;;
+"en_US")
+"${basedir}/${dotbot_dir}/${dotbot_bin}" -d "${basedir}" -c "${config}" "${@}"
+;;
+esac
+;;esac
+touch ${basedir}/.tempconf/installed
 case "$dplang" in
   "zh_CN") echo -e "${cNOTE}本次安装已全部完成。${cNORMAL}";;
   "en_US") echo -e "${cNOTE}The installation process has finished.${cNORMAL}";;
