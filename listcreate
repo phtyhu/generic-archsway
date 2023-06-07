@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-cd "$(dirname "${BASH_SOURCE[0]}")"
-sed -n "$(awk '/###BEGINOFLINK/{print NR}' "$1"),$(awk '/###ENDOFLINK/{print NR}' "$1")p" "$1"|cut -f1 -d"#"|awk '{print $1}'|cut -f1 -d":"|sed '/^$/d'|sed "s/~/\/home\/$(whoami)/"
-# 待改进。由于不知道怎么将值为路径的变量放到sed里面，此脚本使用了非常暴力的方法，将 ~ 展开为 /home/$(whoami) 来获得完整的绝对路径（因为在listoverwrite中必须使用完整的绝对路径才能判断目录是否存在），然而这未必可行：
-# - ~ 未必是 /home/$(whoami) 。
-# - 在 yaml 中或许还可以使用更多变量，比如 $XDG_DATA_HOME （待验证）。

@@ -1,8 +1,0 @@
-#!/bin/bash
-# 此脚本是与某个指南配合使用的。
-# The script is meant to be used with some guide.
-cd "$(dirname "${BASH_SOURCE[0]}")"
-mkdir -p .tempconf
-echo zh_CN>.tempconf/genv-locale.conf;touch .tempconf/installed
-./install-deps
-./install

@@ -173,7 +173,10 @@ fi
 
 # 安装依赖 - Install dependencies {{{
 case $instdeps in y)
-./install-deps
+source ./instdeps-archlinux
+ensureyay
+deps_basic
+deps_vga_amd
 ;;esac
 # }}}
 
