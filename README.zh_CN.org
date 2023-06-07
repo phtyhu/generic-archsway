@@ -31,11 +31,11 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
 #+end_src
 - 在支持中文显示的环境下，运行：
 #+begin_src bash
-~/confrepo/install
+~/confrepo/insdot
 #+end_src
 - 在不支持中文显示的环境（如 tty 下），运行：
 #+begin_src bash
-~/confrepo/install-ascii
+~/confrepo/insdot -a
 #+end_src
 这样就完成了（可能需要重启系统）。
 
@@ -58,7 +58,7 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
 #+begin_quote
 比如，当你编辑或创建了某些配置文件在目录 =~/.config/something= 下，那么：
 - 将此目录复制到 =~/confrepo= 下的某个合适的位置，比如 =~/confrepo/something= 。
-- 编辑 =~/confrepo/install.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
+- 编辑 =~/confrepo/insdot.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
 #+begin_src yaml
 - link:
     ...
@@ -71,7 +71,7 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
 
 单文件是完全同理的，比如你编辑或创建了某个配置文件 =~/.local/share/abc/foo/settings.conf= ，那么：
 - 将此文件复制到 =~/confrepo= 下的某个合适的位置，比如 =~/confrepo/foo/settings.conf= 。
-- 编辑 =~/confrepo/install.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
+- 编辑 =~/confrepo/insdot.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
 #+begin_src yaml
 - link:
     ...
@@ -81,8 +81,8 @@ git clone https://github.com/phtyhu/generic-archsway ~/confrepo
     ...
 #+end_src
 
-之后，运行 =~/confrepo/install= ，
-它会根据 =~/confrepo/install.conf.yaml= 下的 =- links:= 
+之后，运行 =~/confrepo/insdot= ，
+它会根据 =~/confrepo/insdot.conf.yaml= 下的 =- links:= 
 删除原路径的文件或目录，
 并在这些位置创建符号链接
 （来源是 =~/confrepo= 下的对应文件及目录）。
