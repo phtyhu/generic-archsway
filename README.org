@@ -23,6 +23,10 @@ This project is very suitable to be based on and do more configuration, to build
 - Shell: [[https://zsh.sourceforge.io][zsh]], [[https://github.com/ohmyzsh/ohmyzsh][ohmyzsh]], [[https://github.com/romkatv/powerlevel10k][p10k]]
 - Terminal: [[https://github.com/alacritty/alacritty][alacritty]]
 - Screen brightness: [[https://github.com/FedeDP/Clightd][Clightd]]
+#+begin_quote
+Display Manager (Login Manager) is not included mostly because that you'd better not use a DM unless you know the basic knowledge about how it works.
+#+end_quote
+
 
 ** Quick start
 *** Installation
@@ -30,7 +34,7 @@ Firstly make sure you have installed Arch Linux and created a non-root user with
 #+begin_src bash
 sudo pacman -Sy --needed git
 git clone https://github.com/phtyhu/generic-archsway ~/confrepo
-~/confrepo/install
+~/confrepo/insdot
 #+end_src
 And you're done (reboot may be required).
 
@@ -53,7 +57,7 @@ It's highly recommended that once you do more configurations (no matter about sw
 #+begin_quote
 For example, if you edited or created some configuration files under the directory =~/.config/something= , then:
 - Copy this directory to some suitable place under =~/confrepo= , e.g. =~/confrepo/something= .
-- Edit =~/confrepo/install.conf.yaml= and add one corresponding line in the =- link:= part:
+- Edit =~/confrepo/insdot.conf.yaml= and add one corresponding line in the =- link:= part:
 #+begin_src yaml
 - link:
     ...
@@ -66,7 +70,7 @@ Apparently, the left part is the original path, and the right part is the relati
 
 All the same for single files, say if you edited or created a configuration file =~/.local/share/abc/foo/settings.conf= , then:
 - Copy this file to some suitable place under =~/confrepo= , e.g. =~/confrepo/foo/settings.conf= .
-- Edit =~/confrepo/install.conf.yaml= and add one corresponding line in the =- link:= part:
+- Edit =~/confrepo/insdot.conf.yaml= and add one corresponding line in the =- link:= part:
 #+begin_src yaml
 - link:
     ...
@@ -76,11 +80,11 @@ All the same for single files, say if you edited or created a configuration file
     ...
 #+end_src
 
-After that, run =~/confrepo/install= ,
+After that, run =~/confrepo/insdot= ,
 which will remove the files/directories at the original path
 and make symlinks at those places
 from the files/directories under =~/confrepo= ,
-according to the =- links:= part in =~/confrepo/install.conf.yaml= .
+according to the =- links:= part in =~/confrepo/insdot.conf.yaml= .
 #+end_quote
 
 Note that =~/confrepo= is actually a git repository with some submodules in it, so you can use git to manage it, such as archiving for backup, uploading to GitHub for sharing, transfering to another Arch Linux for quick setup, reverting to history versions, etc.
