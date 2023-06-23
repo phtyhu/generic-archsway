@@ -1,0 +1,122 @@
+* A Generic Graphical Environment (sway) setup for Arch Linux
+
+[[README.zh_CN.org][简体中文]]
+** Current version in testing, don't use this!
+Use the tar ball provided in release (v0.1.0) instead.
+
+** Brief Introduction
+If you installed Arch Linux and need a graphical environment, this project is designed just for you!
+
+This project is very suitable to be based on and do more configuration, to build your own working environment.
+
+** Feature
+- Multi language environment available to choose from!
+  - Not only about locale (env vars), but also fonts, input methods, input method helper, installation guidance, etc.
+  - Currently only Simplified Chinese and English, but the designation of this project makes it easy to add more!
+- Easy to get started!
+  - The requirement for installation is minimal, only 2 things: Arch Linux and a non-root sudoer user.
+  - The installation script is idempotent.
+  - (WIP) The guidance is very specific.
+- Suitable for long-term usage!
+  - The project make use of git and [[https://github.com/anishathalye/dotbot][dotbot]] , is able to manage any configurations including your own, E.g. =~/.emacs.d= for Emacs.
+  - This makes long-term maintenance, backup and restoring and quick deployment etc much easier.
+- Graphical Environment: [[https://github.com/swaywm][swaywm]]
+- Input method: [[https://github.com/fcitx/fcitx5][fcitx5]], [[https://github.com/rime][rime]]
+- Shell: [[https://zsh.sourceforge.io][zsh]], [[https://github.com/ohmyzsh/ohmyzsh][ohmyzsh]], [[https://github.com/romkatv/powerlevel10k][p10k]]
+- Terminal: [[https://github.com/alacritty/alacritty][alacritty]]
+- Screen brightness: [[https://github.com/FedeDP/Clightd][Clightd]]
+#+begin_quote
+Display Manager (Login Manager) is not included mostly because that you'd better not use a DM unless you know the basic knowledge about how it works.
+#+end_quote
+
+
+** Quick start
+*** Installation
+Firstly make sure you have installed Arch Linux and created a non-root user with sudo privilege, then login as this user and run command:
+(cr means "configuration repository")
+#+begin_src bash
+sudo pacman -Sy --needed git
+git clone --filter=blob:none https://github.com/clsty/generic-archsway ~/cr
+~/cr/insdot
+#+end_src
+And you're done (reboot may be required).
+
+#+begin_quote
+Note: The behavior of this script is that, during the installation for the first time, it will ask you what locale to choose and whether to confirm to overwrite files. It won't ask again each time after the first time, unless you delete =.coreset= .
+#+end_quote
+
+*** Get started
+Login to tty1 (or login to another tty and mannually run command =~/.local/bin/wrp-sway= ), to launch graphical environment.
+Press =Super+Return= (i.e. "windows key" and "Enter" key) to launch a terminal.
+Press =Super+d= to launch other applications.
+- Note that Left Ctrl key and Caps Lock key has swapped (configure this in =~/.config/sway/config.d/config.conf= ).
+- Now, if you don't know the basic usage of vim, please run =sudo pacman -S --needed vim;vimtutor= to learn (at least complete lesson 1).
+
+After that, run =vifm ~/.config/sway/config.d= to look up and custom the configs of sway, especially =config-keybind.conf= .
+
+*** Long-term Usage
+It's highly recommended that once you do more configurations (no matter about sway or not), save them in =~/cr= and manage it there.
+
+#+begin_quote
+For example, if you edited or created some configuration files under the directory =~/.config/something= , then:
+- Copy this directory to some suitable place under =~/cr= , e.g. =~/cr/something= .
+- Edit =~/cr/insdot.conf.yaml= and add one corresponding line in the =- link:= part:
+#+begin_src yaml
+- link:
+    ...
+    ...
+    ~/.config/something: something
+    ...
+    ...
+#+end_src
+Apparently, the left part is the original path, and the right part is the relative path under =~/cr= .
+
+All the same for single files, say if you edited or created a configuration file =~/.local/share/abc/foo/settings.conf= , then:
+- Copy this file to some suitable place under =~/cr= , e.g. =~/cr/foo/settings.conf= .
+- Edit =~/cr/insdot.conf.yaml= and add one corresponding line in the =- link:= part:
+#+begin_src yaml
+- link:
+    ...
+    ...
+    ~/.local/share/abc/foo/settings.conf: foo/settings.conf
+    ...
+    ...
+#+end_src
+
+After that, run =~/cr/insdot= ,
+which will remove the files/directories at the original path
+and make symlinks at those places
+from the files/directories under =~/cr= ,
+according to the =- links:= part in =~/cr/insdot.conf.yaml= .
+#+end_quote
+
+Note that =~/cr= is actually a git repository with some submodules in it, so you can use git to manage it, such as archiving for backup, uploading to GitHub for sharing, transfering to another Arch Linux for quick setup, reverting to history versions, etc.
+
+For futher customization, you may learn from wikis, guides and mannuals, etc for anything relate to this project, especially:
+- [[https://wiki.archlinux.org/title/Sway][Sway - ArchWiki]]
+- [[https://github.com/swaywm/sway/wiki][Sway User wiki]]
+- [[https://missing.csail.mit.edu/2020/version-control][Git - The missing semester]]
+- [[https://github.com/anishathalye/dotbot][dotbot]]
+
+** Tips and Tricks
+See [[TipsAndTricks.org][Tips and Tricks]].
+
+** Contributing
+It's welcomed to contribute to this project.
+You can make [[https://github.com/clsty/generic-archsway/pulls][Pull Requests]], [[https://github.com/clsty/generic-archsway/issues][issues]] and more.
+
+Currently help needed:
+- Localization (add more locale, improve existing locale).
+- Feedback and advice.
+- Other improvements and enhancement.
+
+** Credits
+Many thanks to all of the FOSS projects related to this project.
+- This project is originally based on [[https://github.com/Jguer/dotfiles][Jguer/dotfiles]].
+- Fontconfig originally based on [[https://github.com/rydesun/dotfiles][rydesun/dotfiles]]
+- [[https://unsplash.com/photos/lmvGn9rTGvY][high-rise buildings during nighttime]]：本项目所使用的壁纸。
+
+Many thanks to all of the contributors.
+
+** License
+This project is released under GNU GPL v3.0 License.

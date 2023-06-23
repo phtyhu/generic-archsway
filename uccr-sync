@@ -1,0 +1,154 @@
+#!/bin/bash
+# vim:fileencoding=utf-8:ft=config:fdm=marker foldlevel=0
+# @Author: clsty (https://github.com/clsty)
+#
+# 注：使用 vim 时可以用 `za` 与 `zi` 切换折叠
+# note: Use `za` or `zi` to toggle folding in vim.
+
+# {{{ uccr 标准化 - uccr standardize
+uccr=archsway
+uccrid=clsty/generic-archsway
+
+selfpath="${BASH_SOURCE[0]}"
+basedirshort="$(dirname $selfpath)"
+cd "${basedirshort}"
+basedir="$(pwd)"
+basedirname="$(basename $basedir)"
+coreset="$basedir/../ulerm/.coreset"
+function nofail { while true;do if "$@";then break;fi;done; }
+function try { "$@" || sleep 0; }
+function trycat { if test -f $1;then cat $1;fi; }
+function catlocale { trycat ${coreset}/locale; }
+cNM='\e[0m'
+cCT='\e[31m'
+cNT='\e[33m'
+if ! test -f ../ready-ulerm; then
+  mkdir uccr
+  find -maxdepth 1 -not -name uccr -not -name . -exec mv {} ./uccr/ \;
+  echo '#!/bin/bash
+  exec "$(dirname $0)"/ulerm/core' > ./ready-ulerm
+  chmod +x ./ready-ulerm
+else
+  if [ "$basedirname" != "uccr" ]; then
+  echo -e "${cCT}The directory containing this script is ${cNT}\"$basedirname\"${cCT}. Please rename it to ${cNT}\"uccr\"${cCT} manually (this script can't do it automatically for now).${cNM}"
+  exit 1
+  fi
+fi
+if ! test -f ../ulerm/core;then
+  try rm -rf ../ulerm
+  nofail git clone --filter=blob:none https://github.com/clsty/ulerm ../ulerm
+  exec ../ulerm/core --uccr="$uccr" --uccrid="$uccrid" ;exit
+fi
+# }}}
+
+# 初始化 - Initialize {{{
+set -e
+## 定义函数 - Define Functions
+listcreate(){
+for i in $(sed -n "$(awk '/^###BEGINOFLINK/{print NR}' "$1"),$(awk '/^###ENDOFLINK/{print NR}' "$1")p" "$1"|cut -f1 -d"#"|awk '{print $1}'|cut -f1 -d":"|sed '/^$/d');do
+  eval echo "$i";done
+}
+
+listoverwrite(){
+for i in $(listcreate "$1"); do
+if [ -e "$i" ] ;then echo "$i";fi
+done
+}
+dotbot_dir="dotbot"
+dotbot_bin="bin/dotbot"
+config="dotbot.conf.yaml"
+config_zh_CN="dotbot.conf.zh_CN.yaml"
+configpath="${basedir}"/"${config}"
+configpath_zh_CN="${basedir}"/"${config_zh_CN}"
+# }}}
+
+# 初次安装时 - For first time installation {{{
+askow=$(trycat ${coreset}/askow)
+instdeps=$(trycat ${coreset}/instdeps)
+# }}}
+
+# 安装依赖 - Install dependencies {{{
+case $instdeps in y)
+source ./deps_Arch
+deps_begin
+deps_end
+genv_begin
+;;esac
+# }}}
+
+# 确认是否覆盖 - Prompt for confirming overwriting {{{
+case $askow in y)
+case "$dplang" in
+"zh_CN")
+echo -e "${cCAUTION}注意：${cNORMAL}
+此脚本会根据${cNOTE} ${configpath} , ${configpath_zh_CN} ${cNORMAL}强制创建符号链接。
+${cCAUTION}若相关文件与目录已存在，则会被覆盖！！
+在执行前请务必确保你已经备份重要文件或目录！！！${cNORMAL}
+
+输入 ${cNOTE}show${cNORMAL} 以查看将被覆盖的文件与目录的列表。
+输入 ${cNOTE}yes${cNORMAL} 以${cCAUTION}确认执行${cNORMAL}此脚本。
+输入 ${cNOTE}no${cNORMAL} 以退出。"
+;;
+"en_US")
+echo -e "
+${cCAUTION}ATTENTION:${cNORMAL}
+The script will forcely create symlinks according to ${cNOTE}${configpath} ${cNORMAL}.
+${cCAUTION}If the related file or directory already exists, it will be OVERWRITTEN PERMANENTLY!!
+MAKE SURE YOU HAVE BACKUPED FOR IMPORTANT FILES/DIRECTORIES!!! ${cNORMAL}
+
+Enter ${cNOTE}show${cNORMAL} to show the list of file and directories which will be overwritten.
+Enter ${cNOTE}yes${cNORMAL} to ${cCAUTION}CONFIRM EXECUSION${cNORMAL} of this script.
+Enter ${cNOTE}no${cNORMAL} to exit."
+;;
+esac
+while true;do
+read -p "[yes/show/no]: " p
+case $p in
+"show")
+case "$(catlocale)" in
+"en_US")
+listoverwrite "${configpath}"|sort|uniq|less
+;;
+"zh_CN")
+cat <(listoverwrite "${configpath}") <(listoverwrite "${configpath_zh_CN}")|sort|uniq|less
+;;
+esac
+;;
+"yes") break;;
+"no") exit 0;;
+esac
+done
+;;esac
+# }}}
+
+# 安装 - Install {{{
+nofail git submodule update --init --recursive "${dotbot_dir}"
+case $dryrun in y);; # 指定了 --dryrun 时什么也不做
+  *)
+case "$(catlocale)" in
+"zh_CN")
+"${basedir}/${dotbot_dir}/${dotbot_bin}" -d "${basedir}" -c "${config}" "${@}"
+"${basedir}/${dotbot_dir}/${dotbot_bin}" -d "${basedir}" -c "${config_zh_CN}" "${@}"
+;;
+"en_US")
+"${basedir}/${dotbot_dir}/${dotbot_bin}" -d "${basedir}" -c "${config}" "${@}"
+;;
+esac
+;;esac
+touch ${coreset}/installed
+case "$dplang" in
+  "zh_CN") echo -e "${cNOTE}本次安装已全部完成。${cNORMAL}";;
+  "en_US") echo -e "${cNOTE}The installation process has finished.${cNORMAL}";;
+esac
+# }}}
+
+# 切换 shell - Switch shell {{{
+if [ $(awk -F: -v user="$(whoami)" '$1 == user {print $NF}' /etc/passwd) != /bin/zsh ]
+then 
+  case "$dplang" in
+    "zh_CN")echo "正在将默认 shell 切换到 zsh。";;
+    "en_US")echo "Changing default shell to zsh.";;
+  esac
+  nofail sudo chsh -s /bin/zsh $(whoami)
+fi
+# }}}

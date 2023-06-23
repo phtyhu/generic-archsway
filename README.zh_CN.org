@@ -1,0 +1,122 @@
+* 一份通用型的 Arch Linux 图形环境（sway）配置
+
+** 当前版本正在测试中，请勿使用！
+可以使用release中提供的tar压缩包（v0.1.0）。
+
+** 简介
+如果你安装了 Arch Linux，需要一个图形环境，那么这份配置正是为你准备的！
+
+此项目非常适合在此基础上进行更多配置，以搭配出自己的工作环境。
+
+** 特性
+- 可选择多种语言环境！
+  - 不仅是单纯的选择语言，还包括字体、输入法、输入辅助、安装引导等。
+  - 目前仅支持简体中文与英文，但本项目在设计上是可以轻松添加更多语言的。
+- 很好上手！
+  - 要求很低，只有两点：Arch Linux 以及一个非 root 的 sudo 用户。
+  - 安装脚本是幂等的。
+  - (WIP) 引导非常详尽。
+- 适合长期使用！
+  - 本项目借助 git 与 [[https://github.com/anishathalye/dotbot][dotbot]] ，能够管理一切配置，包括你自己的，比如 Emacs 的 =~/.emacs.d= 。
+  - 这使得长期维护与备份恢复、快速部署等变得轻松简单。
+- 图形环境：[[https://github.com/swaywm][swaywm]]
+- 输入法：[[https://github.com/fcitx/fcitx5][fcitx5]], [[https://github.com/rime][rime]]
+- Shell：[[https://zsh.sourceforge.io][zsh]], [[https://github.com/ohmyzsh/ohmyzsh][ohmyzsh]], [[https://github.com/romkatv/powerlevel10k][p10k]]
+- 终端：[[https://github.com/alacritty/alacritty][alacritty]]
+- 屏幕亮度：[[https://github.com/FedeDP/Clightd][Clightd]]
+
+** 快速上手
+*** 安装
+首先确保你已经安装了 Arch Linux 并建立了一个具有 sudo 权限的普通用户，以此用户身份登录，运行：
+#+begin_src bash
+sudo pacman -Sy --needed git
+git clone https://github.com/clsty/generic-archsway ~/confrepo
+#+end_src
+- 在支持中文显示的环境下，运行：
+#+begin_src bash
+~/confrepo/insdot
+#+end_src
+- 在不支持中文显示的环境（如 tty 下，或者没装中文字体），运行：
+#+begin_src bash
+~/confrepo/insdot -a
+#+end_src
+这样就完成了（可能需要重启系统）。
+
+#+begin_quote
+注：此脚本的行为是，首次安装时会提示选择什么语言，以及是否覆盖文件。之后每次运行均不再询问，除非删除 =.coreset= 。
+#+end_quote
+
+*** 开始使用
+登录到 tty1（或登录到其它 tty 并手动运行命令 =~/.local/bin/wrp-sway= ），进入图形环境。
+按 =Super+Return= （就是“windows 键”与“回车键”）来启动一个终端。
+按 =Super+d= 来启动其他应用程序。
+- 注意左 Ctrl 键和大写锁定键已互换（可使用 =~/.config/sway/config.d/config.conf= 修改）。
+- 如果你还不会 vim 的基本操作，现在请输入 =sudo pacman -S --needed vim;vimtutor= 进行学习（至少完成第一讲）。
+
+之后，运行 =vifm ~/.config/sway/config.d= 来查看并自定义 sway 的配置，尤其是 =config-keybind.conf= 。
+
+*** 长期使用
+非常推荐的是，当你进行了一些自定义配置（无论是否是 sway 相关的）时，都将它们保存到 =~/confrepo= 并且在那里管理它们。
+
+#+begin_quote
+比如，当你编辑或创建了某些配置文件在目录 =~/.config/something= 下，那么：
+- 将此目录复制到 =~/confrepo= 下的某个合适的位置，比如 =~/confrepo/something= 。
+- 编辑 =~/confrepo/insdot.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
+#+begin_src yaml
+- link:
+    ...
+    ...
+    ~/.config/something: something
+    ...
+    ...
+#+end_src
+显然，左边的是原路径，而右边的是 =~/confrepo= 下的相对路径。
+
+单文件是完全同理的，比如你编辑或创建了某个配置文件 =~/.local/share/abc/foo/settings.conf= ，那么：
+- 将此文件复制到 =~/confrepo= 下的某个合适的位置，比如 =~/confrepo/foo/settings.conf= 。
+- 编辑 =~/confrepo/insdot.conf.yaml= 并在 =- link:= 部分下面添加对应的一行：
+#+begin_src yaml
+- link:
+    ...
+    ...
+    ~/.local/share/abc/foo/settings.conf: foo/settings.conf
+    ...
+    ...
+#+end_src
+
+之后，运行 =~/confrepo/insdot= ，
+它会根据 =~/confrepo/insdot.conf.yaml= 下的 =- links:= 
+删除原路径的文件或目录，
+并在这些位置创建符号链接
+（来源是 =~/confrepo= 下的对应文件及目录）。
+#+end_quote
+
+注意 =~/confrepo= 实际上是一个 git 仓库（且其中包含了一些子模块），所以你可以使用 git 来管理它，比如存档备份、上传到 GitHub 来分享、发送到其它设备上以快速部署、回溯历史记录，等等。
+
+为了进行更多自定义，你可以查阅此项目所用到的其它项目的 wiki、指南、手册等，尤其是：
+- [[https://wiki.archlinux.org/title/Sway][Sway - ArchWiki]]
+- [[https://github.com/swaywm/sway/wiki][Sway User wiki]]
+- [[https://missing-semester-cn.github.io/2020/version-control][Git - 计算机教育中缺失的一课]]
+- [[https://github.com/anishathalye/dotbot][dotbot]]
+
+** 使用技巧与建议
+见 [[TipsAndTricks.zh_CN.org][使用技巧与建议]]。
+
+** 贡献
+欢迎参与贡献。
+你可以创建 [[https://github.com/clsty/generic-archsway/pulls][Pull Requests]]，[[https://github.com/clsty/generic-archsway/issues][issues]] 等。
+
+当前需要帮助的：
+- 本地化（添加更多语言环境，完善已有环境）。
+- 反馈与建议。
+- 其他完善与提升。
+
+** 致谢
+感谢与此项目相关的所有自由开源项目。
+- 此项目原本基于 [[https://github.com/Jguer/dotfiles][Jguer/dotfiles]] 。
+- Fontconfig 原本基于 [[https://github.com/rydesun/dotfiles][rydesun/dotfiles]]
+感谢此项目的所有贡献者。
+- wallpaper photo from https://www.pexels.com/zh-cn/photo/13427044/
+
+** 许可
+此项目以 GNU GPL v3.0 License 发布。

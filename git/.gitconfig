@@ -1,0 +1,58 @@
+# ~/.gitconfig
+[branch]
+autosetuprebase = always
+
+[commit]
+gpgsign = true
+
+[push]
+default = current
+#followTags = true
+
+[rebase]
+autostash = true
+autosquash = true
+
+[include]
+path=~/.gitconfig-user
+
+[status]
+submoduleSummary = true
+
+[core]
+excludesfile = ~/.gitignore
+
+[pager]
+diff = delta
+log = delta
+reflog = delta
+show = delta
+
+[diff]
+colorMoved = default
+
+[merge]
+conflictStyle = zdiff3
+
+[delta]
+plus-style = syntax "#003800"
+minus-style = syntax "#3f0001"
+syntax-theme = Dracula
+features = line-numbers decorations
+hyperlinks = True
+navigate = True
+
+[interactive]
+diffFilter = delta --color-only
+
+[pull]
+rebase = true
+
+[protocol]
+version = 2
+
+[credential]
+helper = /usr/lib/git-core/git-credential-libsecret
+
+[init]
+defaultBranch = main

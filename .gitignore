@@ -1,0 +1,4 @@
+*.pkg.tar.xz
+mpv/watch_later
+.coreset/*
+GUI-base/sway/config.d/*.l10n.conf

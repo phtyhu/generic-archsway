@@ -1,0 +1,70 @@
+#!/bin/bash
+# vim:fileencoding=utf-8:ft=config:fdm=marker foldlevel=0
+
+# 定义基本函数 - Define basic functions {{{
+function nofail { while true;do if $@;then break;fi;done; }
+function try { $@ || sleep 0; }
+function trycat { if test -f $1;then cat $1;fi; }
+function catlocale { trycat ../ulerm/.coreset/locale; }
+
+function y { nofail yay -S --needed --noconfirm $1; }
+function p { nofail sudo pacman -S --needed --noconfirm $1; }
+function pr { try sudo pacman -R --noconfirm $1; }
+function se { try sudo systemctl enable --now $1; }
+function ue { try systemctl enable --now --user $1; }
+function sd { try sudo systemctl disable --now $1; }
+function ud { try systemctl disable --now --user $1; }
+# }}}
+
+# deps_begin {{{
+deps_begin(){
+## 确保有 AUR 助手 - Ensure AUR helper available
+if test -f "/usr/bin/yay";
+then echo "/usr/bin/yay found."
+else echo "/usr/bin/yay not found, now install yay:"
+  t=~/.cache/yay/; mkdir -p $t; cd $t
+  p git base-devel curl
+  nofail git clone https://aur.archlinux.org/yay-bin.git
+  cd yay-bin
+  nofail makepkg -si --noconfirm
+fi
+}
+# }}}
+
+# deps_end {{{
+deps_end(){
+  sleep 0
+}
+# }}}
+
+# genv_begin {{{
+genv_begin(){
+# 基本安装
+p \
+git base-devel curl \
+zsh emacs-nativecomp vifm exa bat fzf fd \
+xorg-xwayland sway swayidle swaybg \
+mako polkit-gnome \
+gammastep swayidle slurp grim swappy \
+zenity alacritty playerctl wofi \
+firefox zathura zathura-cb zathura-djvu zathura-pdf-poppler zathura-ps \
+ttf-firacode-nerd qt5ct qt6ct ttf-nerd-fonts-symbols-mono
+#blueman network-manager-applet 
+# If waybar-hyprland exists, then there's no need to install waybar (perhaps).
+if test -f /usr/bin/waybar;then sleep 0;else p waybar;fi
+y swaylock-effects clightd ttf-twemoji-color
+se clightd.service
+
+try mkdir ~/.cache
+try mv ~/.vifm ~/.vifmold
+
+if [ $(catlocale) == "zh_CN" ] ; then
+p \
+fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt fcitx5-nord fcitx5-rime \
+firefox-i18n-zh-cn \
+wqy-microhei noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-sarasa-gothic \
+adobe-source-han-sans-cn-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-tw-fonts \
+adobe-source-han-serif-cn-fonts adobe-source-han-serif-jp-fonts adobe-source-han-serif-kr-fonts adobe-source-han-serif-otc-fonts adobe-source-han-serif-tw-fonts
+fi
+}
+# }}}
