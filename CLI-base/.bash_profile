@@ -1,6 +1,6 @@
-export EDITOR='nvim'
-export DIFFPROG='nvim -d'
-export VISUAL='nvim'
+export EDITOR='emacs -nw'
+#export DIFFPROG='nvim -d'
+#export VISUAL='nvim'
 export PAGER='less'
 export GOPATH="$HOME/go"
 export GPG_TTY=$(tty)
