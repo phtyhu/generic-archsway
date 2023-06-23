@@ -15,7 +15,7 @@ cd "${basedirshort}"
 basedir="$(pwd)"
 basedirname="$(basename $basedir)"
 coreset="$basedir/../ulerm/.coreset"
-function nofail { while true;do if "$@";then break;fi;done; }
+function nofail { while true;do if "$@";then break;else echo "!! Retrying \"$@\"";sleep 1;fi;done; }
 function try { "$@" || sleep 0; }
 function trycat { if test -f $1;then cat $1;fi; }
 function catlocale { trycat ${coreset}/locale; }

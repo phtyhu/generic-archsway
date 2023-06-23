@@ -1,3 +1,2 @@
 #!/bin/bash
-while true;do if "$@"
-then break;fi;done
+while true;do if "$@";then break;else echo "!! Retrying \"$@\"";sleep 1;fi;done
